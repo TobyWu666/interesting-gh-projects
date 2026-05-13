@@ -97,6 +97,14 @@ function stripMarkdown(text) {
     .trim();
 }
 
+function getDisplayBody(raw) {
+  if (raw.startsWith("---\n")) {
+    const end = raw.indexOf("\n---", 4);
+    return raw.slice(end + 4).trim();
+  }
+  return raw.trim();
+}
+
 function getSection(body, heading) {
   const start = body.indexOf(heading);
   if (start === -1) return "";
@@ -299,7 +307,8 @@ async function main() {
       stars: data.stars || "",
       install: data.install || "",
       recommended: Boolean(data.recommended),
-      source: `content/projects/${file}`
+      source: `content/projects/${file}`,
+      body: getDisplayBody(raw)
     });
   }
 

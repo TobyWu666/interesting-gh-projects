@@ -93,6 +93,7 @@ function renderTags() {
 function createArticleCard(project, featured = false) {
   const article = document.createElement("article");
   article.className = featured ? "project-card featured-card" : "project-card";
+  const articleUrl = `article.html?id=${encodeURIComponent(project.id)}`;
   const homepageLink = project.homepage
     ? `<a href="${project.homepage}" target="_blank" rel="noreferrer">網站</a>`
     : "";
@@ -103,7 +104,7 @@ function createArticleCard(project, featured = false) {
       <span class="status-pill">${project.stars || project.status}</span>
     </div>
     <div>
-      <h3>${project.title}</h3>
+      <h3><a href="${articleUrl}">${project.title}</a></h3>
       <p class="subtitle">${project.subtitle || ""}</p>
       <p>${project.summary}</p>
     </div>
@@ -121,7 +122,8 @@ function createArticleCard(project, featured = false) {
       </div>
     </dl>
     <div class="card-actions">
-      <a class="primary" href="${project.repo}" target="_blank" rel="noreferrer">GitHub</a>
+      <a class="primary" href="${articleUrl}">閱讀文章</a>
+      <a href="${project.repo}" target="_blank" rel="noreferrer">GitHub</a>
       ${homepageLink}
     </div>
   `;
@@ -132,9 +134,7 @@ function createArticleCard(project, featured = false) {
 function createLatestItem(project) {
   const link = document.createElement("a");
   link.className = "latest-item";
-  link.href = project.repo;
-  link.target = "_blank";
-  link.rel = "noreferrer";
+  link.href = `article.html?id=${encodeURIComponent(project.id)}`;
   link.innerHTML = `
     <span>${formatDate(project.updated)}</span>
     <strong>${project.title}</strong>
