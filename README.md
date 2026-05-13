@@ -21,6 +21,22 @@ npm run build:data
 npm run validate
 ```
 
+## 上傳前檢查
+
+每次 commit / push 前都必須跑：
+
+```bash
+npm run validate
+npm run build:data
+```
+
+檢查器會擋下：
+
+- Markdown 內含簡體字。
+- Repo URL 留空或不是 GitHub 專案網址。
+- 文章標題不是純專案名稱。
+- 文章內含 agent 生成資訊 footer，例如心得文生成、測試環境、生成時間。
+
 ## GitHub Pages
 
 推到 GitHub 後，可在 GitHub Pages 設定使用 `main` 分支的 repository root 部署。

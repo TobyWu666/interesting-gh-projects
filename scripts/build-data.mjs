@@ -50,7 +50,31 @@ const simplifiedTerms = [
   "支持",
   "实现",
   "体验",
-  "优化"
+  "优化",
+  "质量",
+  "启动",
+  "链接",
+  "网页",
+  "后台",
+  "服务器",
+  "软件",
+  "上传"
+];
+
+const forbiddenReportTitleTerms = [
+  "📦",
+  "GitHub 專案心得",
+  "專案心得：",
+  "「",
+  "」",
+  "\""
+];
+
+const forbiddenFooterTerms = [
+  "心得文生成",
+  "測試環境",
+  "生成時間",
+  "Hermes Agent"
 ];
 
 function parseList(value) {
@@ -126,6 +150,35 @@ function matchRequired(raw, pattern, file, label) {
   return match;
 }
 
+function validateReportTitle(title, file) {
+  const found = forbiddenReportTitleTerms.filter((term) => title.includes(term));
+  if (found.length) {
+    throw new Error(`${file}: 標題只能放專案名稱，請移除 ${found.join("、")}`);
+  }
+
+  if (title.length > 60) {
+    throw new Error(`${file}: 標題過長，請只保留專案名稱`);
+  }
+}
+
+function validateRequiredUrl(url, file, label) {
+  const invalidValues = new Set(["", "tbd", "todo", "none", "null", "待補", "無"]);
+  const normalized = String(url || "").trim().toLowerCase();
+  if (invalidValues.has(normalized)) {
+    throw new Error(`${file}: ${label} 必須有實際網址`);
+  }
+  if (!/^https?:\/\/\S+$/.test(url)) {
+    throw new Error(`${file}: ${label} 必須是完整 URL`);
+  }
+}
+
+function validateNoWorkflowFooter(raw, file) {
+  const found = forbiddenFooterTerms.filter((term) => raw.includes(term));
+  if (found.length) {
+    throw new Error(`${file}: 不要把 agent 生成資訊放入文章內容，請移除 ${found.join("、")}`);
+  }
+}
+
 function inferTags({ title, language, install, body }) {
   const tags = new Set(["心得文"]);
   if (language) tags.add(language);
@@ -148,16 +201,21 @@ function parseReport(raw, file) {
   const languageMatch = matchRequired(raw, /^\*\*語言：\*\*\s*(.+)$/m, file, "語言");
   const installMatch = raw.match(/^\*\*安裝：\*\*\s*(.+)$/m);
   const whatSection = stripMarkdown(getSection(raw, "## 📖 這是什麼"));
-  const title = titleMatch[1].replace(/^.*?：/, "").trim();
+  const title = titleMatch[1].trim();
   const subtitle = subtitleMatch ? stripMarkdown(subtitleMatch[1]) : "";
   const language = stripMarkdown(languageMatch[1]);
   const install = installMatch ? stripMarkdown(installMatch[1]) : "";
+  const repo = repoMatch[2].replace(/\/$/, "");
+
+  validateReportTitle(title, file);
+  validateRequiredUrl(repo, file, "Repo");
+  validateNoWorkflowFooter(raw, file);
 
   return {
     data: {
       title,
       subtitle,
-      repo: repoMatch[2].replace(/\/$/, ""),
+      repo,
       homepage: "",
       summary: truncateText(whatSection || subtitle, 96),
       tags: inferTags({ title, language, install, body: raw }),
@@ -199,9 +257,12 @@ function validateFields(data, file) {
     throw new Error(`${file}: frontmatter 欄位順序必須固定，請從 ${wrongOrder} 開始修正`);
   }
 
+  validateReportTitle(data.title, file);
+
   if (!/^https:\/\/github\.com\/[^/\s]+\/[^/\s]+\/?$/.test(data.repo)) {
     throw new Error(`${file}: repo 必須是 GitHub 專案網址`);
   }
+  validateRequiredUrl(data.repo, file, "repo");
 
   if (data.homepage && !/^https?:\/\/\S+$/.test(data.homepage)) {
     throw new Error(`${file}: homepage 必須是 URL 或留空`);
@@ -284,6 +345,7 @@ async function main() {
   for (const file of files) {
     const fullPath = path.join(contentDir, file);
     const raw = await readFile(fullPath, "utf8");
+    validateNoWorkflowFooter(raw, file);
     const { data, body, format } = normalizeRecord(raw, file);
 
     if (format === "report") {
