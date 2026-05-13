@@ -20,6 +20,10 @@
       "專案量大",
       "適合延伸測試"
     ],
+    "subtitle": "",
+    "stars": "",
+    "install": "",
+    "recommended": false,
     "source": "content/projects/awesome-selfhosted.md"
   },
   {
@@ -43,6 +47,10 @@
       "模型切換快",
       "適合離線實驗"
     ],
+    "subtitle": "",
+    "stars": "",
+    "install": "",
+    "recommended": false,
     "source": "content/projects/ollama.md"
   },
   {
@@ -66,6 +74,38 @@
       "生態成熟",
       "適合快速原型"
     ],
+    "subtitle": "",
+    "stars": "",
+    "install": "",
+    "recommended": false,
     "source": "content/projects/supabase.md"
+  },
+  {
+    "id": "pyjokes",
+    "title": "pyjokes",
+    "repo": "https://github.com/navdeepG/pyjokes",
+    "homepage": "",
+    "summary": "pyjokes 是一個工程師笑話產生器。它沒有華麗的功能，沒有 AI，就是一個裝滿程式設計師乾話的資料庫，加上 random.choice() 隨機抽出來。 說穿了就是這樣： 但就是這麼無聊…",
+    "tags": [
+      "心得文",
+      "Python",
+      "CLI",
+      "幽默工具",
+      "教學範例"
+    ],
+    "status": "已測試",
+    "language": "Python",
+    "updated": "2026-05-13",
+    "difficulty": "入門",
+    "highlights": [
+      "心得完整",
+      "測試具體",
+      "適合快速閱讀"
+    ],
+    "subtitle": "用 200 行 Python 讓工程師會心一笑",
+    "stars": "~2k",
+    "install": "pip install pyjokes",
+    "recommended": true,
+    "source": "content/projects/pyjokes.md"
   }
 ]

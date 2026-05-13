@@ -1,6 +1,6 @@
-# 有趣 GitHub 專案測試庫
+# Git趣
 
-一個用來收集、分類與搜尋有趣 GitHub 專案的靜態網站。內容來源放在 `content/projects/*.md`，網站資料由 `scripts/build-data.mjs` 產生到 `data/projects.json`。
+一個用來收集有趣 GitHub 專案心得、測試紀錄與推薦文章的靜態網站。內容來源放在 `content/projects/*.md`，網站資料由 `scripts/build-data.mjs` 產生到 `data/projects.json`。
 
 ## 更新流程
 
@@ -12,7 +12,7 @@
 npm run build:data
 ```
 
-4. 開啟 `index.html` 檢查搜尋與 tag 分類是否正常
+4. 開啟 `index.html` 檢查推薦文章、最近更新、右上搜尋與 tag 分類是否正常
 
 ## 指令
 

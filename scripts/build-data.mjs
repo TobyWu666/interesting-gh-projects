@@ -28,6 +28,14 @@ const requiredHeadings = [
   "## 風險與備註"
 ];
 
+const reportHeadings = [
+  "## 📖 這是什麼",
+  "## ⚙️ 原理",
+  "## 🧪 測試結果",
+  "## 💡 想法與心得",
+  "## 📊 總評"
+];
+
 const allowedStatus = new Set(["待研究", "可測試", "已測試", "暫緩"]);
 const allowedDifficulty = new Set(["入門", "中階", "進階"]);
 const simplifiedTerms = [
@@ -77,6 +85,86 @@ function parseFrontmatter(raw, file) {
   });
 
   return { data, body };
+}
+
+function stripMarkdown(text) {
+  return text
+    .replace(/```[\s\S]*?```/g, "")
+    .replace(/!\[[^\]]*\]\([^)]+\)/g, "")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/[*_`>#|]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function getSection(body, heading) {
+  const start = body.indexOf(heading);
+  if (start === -1) return "";
+  const rest = body.slice(start + heading.length);
+  const next = rest.search(/\n##\s+/);
+  return (next === -1 ? rest : rest.slice(0, next)).trim();
+}
+
+function truncateText(text, maxLength) {
+  if (text.length <= maxLength) return text;
+  return `${text.slice(0, maxLength - 1)}…`;
+}
+
+function matchRequired(raw, pattern, file, label) {
+  const match = raw.match(pattern);
+  if (!match) {
+    throw new Error(`${file}: 缺少 ${label}`);
+  }
+  return match;
+}
+
+function inferTags({ title, language, install, body }) {
+  const tags = new Set(["心得文"]);
+  if (language) tags.add(language);
+  if (/CLI|command line|終端機/i.test(body)) tags.add("CLI");
+  if (/笑話|幽默|會心一笑/.test(body)) tags.add("幽默工具");
+  if (/教學|範例|入門/.test(body)) tags.add("教學範例");
+  if (/AI|模型|推理/i.test(body)) tags.add("AI");
+  if (/Docker|部署|自架/i.test(body)) tags.add("部署");
+  if (/bot|Discord|Telegram/i.test(body)) tags.add("Bot");
+  if (title && tags.size < 3) tags.add("開源專案");
+  return [...tags].slice(0, 5);
+}
+
+function parseReport(raw, file) {
+  const titleMatch = matchRequired(raw, /^#\s+(.+)$/m, file, "文章標題");
+  const subtitleMatch = raw.match(/^###\s+(.+)$/m);
+  const dateMatch = matchRequired(raw, /^\*\*日期：\*\*\s*(\d{4}-\d{2}-\d{2})$/m, file, "日期");
+  const repoMatch = matchRequired(raw, /^\*\*Repo：\*\*\s*\[([^\]]+)\]\((https:\/\/github\.com\/[^)]+)\)$/m, file, "Repo");
+  const starsMatch = raw.match(/^\*\*⭐ Stars：\*\*\s*(.+)$/m);
+  const languageMatch = matchRequired(raw, /^\*\*語言：\*\*\s*(.+)$/m, file, "語言");
+  const installMatch = raw.match(/^\*\*安裝：\*\*\s*(.+)$/m);
+  const whatSection = stripMarkdown(getSection(raw, "## 📖 這是什麼"));
+  const title = titleMatch[1].replace(/^.*?：/, "").trim();
+  const subtitle = subtitleMatch ? stripMarkdown(subtitleMatch[1]) : "";
+  const language = stripMarkdown(languageMatch[1]);
+  const install = installMatch ? stripMarkdown(installMatch[1]) : "";
+
+  return {
+    data: {
+      title,
+      subtitle,
+      repo: repoMatch[2].replace(/\/$/, ""),
+      homepage: "",
+      summary: truncateText(whatSection || subtitle, 96),
+      tags: inferTags({ title, language, install, body: raw }),
+      status: "已測試",
+      language,
+      updated: dateMatch[1],
+      difficulty: "入門",
+      highlights: ["心得完整", "測試具體", "適合快速閱讀"],
+      stars: starsMatch ? stripMarkdown(starsMatch[1]) : "",
+      install,
+      recommended: true
+    },
+    body: raw,
+    format: "report"
+  };
 }
 
 function validateTraditionalChinese(text, file) {
@@ -157,6 +245,27 @@ function validateHeadings(body, file) {
   });
 }
 
+function validateReportHeadings(body, file) {
+  const missing = reportHeadings.filter((heading) => !body.includes(heading));
+  if (missing.length) {
+    throw new Error(`${file}: 心得文缺少段落 ${missing.join("、")}`);
+  }
+}
+
+function normalizeRecord(raw, file) {
+  if (!raw.startsWith("---\n")) {
+    return parseReport(raw, file);
+  }
+
+  const record = parseFrontmatter(raw, file);
+  validateFields(record.data, file);
+  validateHeadings(record.body, file);
+  return {
+    ...record,
+    format: "frontmatter"
+  };
+}
+
 async function main() {
   const files = (await readdir(contentDir))
     .filter((file) => file.endsWith(".md"))
@@ -167,10 +276,11 @@ async function main() {
   for (const file of files) {
     const fullPath = path.join(contentDir, file);
     const raw = await readFile(fullPath, "utf8");
-    const { data, body } = parseFrontmatter(raw, file);
+    const { data, body, format } = normalizeRecord(raw, file);
 
-    validateFields(data, file);
-    validateHeadings(body, file);
+    if (format === "report") {
+      validateReportHeadings(body, file);
+    }
     validateTraditionalChinese(raw, file);
 
     projects.push({
@@ -185,6 +295,10 @@ async function main() {
       updated: data.updated,
       difficulty: data.difficulty,
       highlights: data.highlights,
+      subtitle: data.subtitle || "",
+      stars: data.stars || "",
+      install: data.install || "",
+      recommended: Boolean(data.recommended),
       source: `content/projects/${file}`
     });
   }

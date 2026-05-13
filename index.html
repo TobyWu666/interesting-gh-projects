@@ -3,36 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="有趣 GitHub 專案測試庫，依 tag、語言、難度與關鍵字快速搜尋。">
-  <title>有趣 GitHub 專案測試庫</title>
+  <meta name="description" content="Git趣，收集有趣 GitHub 專案心得、測試紀錄與推薦文章。">
+  <title>Git趣</title>
   <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
   <header class="site-header">
     <nav class="topbar" aria-label="主要導覽">
-      <a class="brand" href="./" aria-label="回到首頁">
-        <span class="brand-mark" aria-hidden="true">GH</span>
-        <span>有趣專案測試庫</span>
+      <a class="brand" href="./" aria-label="回到 Git趣首頁">
+        <span class="brand-mark" aria-hidden="true">GQ</span>
+        <span>Git趣</span>
       </a>
-      <div class="nav-actions">
-        <a href="docs/recording-rules.md">紀錄規則</a>
-        <a href="templates/project-record.md">MD 模板</a>
-      </div>
+      <label class="top-search" for="searchInput">
+        <span>搜尋</span>
+        <input id="searchInput" type="search" placeholder="找專案、tag、語言" autocomplete="off">
+      </label>
     </nav>
 
     <section class="hero">
       <div class="hero-copy">
-        <p class="eyebrow">Curated GitHub Playground</p>
-        <h1>把值得一試的開源專案，整理成可搜尋、可比較、可長期更新的測試庫。</h1>
+        <p class="eyebrow">GitHub Curiosity Notes</p>
+        <h1>有趣專案的心得筆記，先看推薦，再翻最近更新。</h1>
+        <p class="hero-text">把每天挖到的 GitHub 專案整理成好讀的文章，而不是一堆冷冰冰的連結。</p>
       </div>
       <div class="hero-panel" aria-label="資料摘要">
         <div>
           <span id="projectCount">0</span>
-          <small>收錄專案</small>
+          <small>篇文章</small>
         </div>
         <div>
           <span id="tagCount">0</span>
-          <small>分類標籤</small>
+          <small>個 tag</small>
         </div>
         <div>
           <span id="lastUpdated">-</span>
@@ -43,50 +44,43 @@
   </header>
 
   <main>
-    <section class="control-band" aria-label="搜尋與篩選">
-      <div class="search-wrap">
-        <label for="searchInput">搜尋</label>
-        <input id="searchInput" type="search" placeholder="輸入專案名稱、摘要、tag 或語言" autocomplete="off">
+    <section class="tag-band" aria-label="Tag 分類">
+      <div class="section-label">
+        <span>Tags</span>
+        <p id="resultMeta">正在載入資料</p>
       </div>
-
-      <div class="filter-row">
-        <div>
-          <label for="statusFilter">狀態</label>
-          <select id="statusFilter">
-            <option value="">全部狀態</option>
-          </select>
-        </div>
-        <div>
-          <label for="difficultyFilter">難度</label>
-          <select id="difficultyFilter">
-            <option value="">全部難度</option>
-          </select>
-        </div>
-        <div>
-          <label for="sortSelect">排序</label>
-          <select id="sortSelect">
-            <option value="updated-desc">最近更新</option>
-            <option value="title-asc">名稱 A-Z</option>
-            <option value="difficulty-asc">難度由低到高</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="tag-strip" id="tagStrip" aria-label="Tag 分類"></div>
+      <div class="tag-strip" id="tagStrip"></div>
     </section>
 
-    <section class="results-head">
-      <h2>專案列表</h2>
-      <p id="resultMeta">正在載入資料</p>
+    <section class="feature-layout">
+      <div>
+        <div class="section-head">
+          <span>Recommended</span>
+          <h2>推薦文章</h2>
+        </div>
+        <div class="featured-list" id="featuredList" aria-live="polite"></div>
+      </div>
+
+      <aside class="latest-panel" aria-label="最近更新">
+        <div class="section-head">
+          <span>Fresh Notes</span>
+          <h2>最近更新</h2>
+        </div>
+        <div class="latest-list" id="latestList"></div>
+      </aside>
     </section>
 
+    <section class="section-head all-head">
+      <span>Archive</span>
+      <h2>全部文章</h2>
+    </section>
     <section class="project-grid" id="projectGrid" aria-live="polite"></section>
-    <p class="empty-state" id="emptyState" hidden>找不到符合條件的專案。</p>
+    <p class="empty-state" id="emptyState" hidden>找不到符合條件的文章。</p>
   </main>
 
   <footer class="site-footer">
-    <span>資料來源：content/projects/*.md</span>
-    <span>繁體中文格式由 scripts/build-data.mjs 檢查</span>
+    <span>Git趣</span>
+    <span>內容來源：content/projects/*.md</span>
   </footer>
 
   <script src="assets/app.js"></script>
