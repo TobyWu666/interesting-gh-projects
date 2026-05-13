@@ -1,0 +1,71 @@
+[
+  {
+    "id": "awesome-selfhosted",
+    "title": "自架服務靈感清單",
+    "repo": "https://github.com/awesome-selfhosted/awesome-selfhosted",
+    "homepage": "https://awesome-selfhosted.net/",
+    "summary": "收集可自行部署的網路服務與應用，適合用來找尋個人伺服器、內部工具與資料自主的實驗題材。",
+    "tags": [
+      "自架",
+      "工具清單",
+      "生產力",
+      "DevOps"
+    ],
+    "status": "可測試",
+    "language": "Markdown",
+    "updated": "2026-05-14",
+    "difficulty": "入門",
+    "highlights": [
+      "分類完整",
+      "專案量大",
+      "適合延伸測試"
+    ],
+    "source": "content/projects/awesome-selfhosted.md"
+  },
+  {
+    "id": "ollama",
+    "title": "Ollama",
+    "repo": "https://github.com/ollama/ollama",
+    "homepage": "https://ollama.com/",
+    "summary": "讓本機執行大型語言模型更容易的工具，適合測試私有化模型、離線推理與原型整合。",
+    "tags": [
+      "AI",
+      "本機模型",
+      "開發工具",
+      "推理"
+    ],
+    "status": "可測試",
+    "language": "Go",
+    "updated": "2026-05-14",
+    "difficulty": "中階",
+    "highlights": [
+      "安裝簡潔",
+      "模型切換快",
+      "適合離線實驗"
+    ],
+    "source": "content/projects/ollama.md"
+  },
+  {
+    "id": "supabase",
+    "title": "Supabase",
+    "repo": "https://github.com/supabase/supabase",
+    "homepage": "https://supabase.com/",
+    "summary": "以 PostgreSQL 為核心的開源後端平台，整合資料庫、驗證、即時訂閱、儲存與邊緣函式。",
+    "tags": [
+      "後端平台",
+      "PostgreSQL",
+      "即時資料",
+      "開發工具"
+    ],
+    "status": "可測試",
+    "language": "TypeScript",
+    "updated": "2026-05-14",
+    "difficulty": "中階",
+    "highlights": [
+      "文件清楚",
+      "生態成熟",
+      "適合快速原型"
+    ],
+    "source": "content/projects/supabase.md"
+  }
+]
