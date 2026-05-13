@@ -672,3 +672,24 @@ a:focus-visible {
     transition: none !important;
   }
 }
+
+/* Dark theme hardening: keeps cached or legacy section styles from leaking light surfaces. */
+body,
+.article-page {
+  background-color: var(--bg);
+  color: var(--ink);
+}
+
+.tag-band,
+.latest-panel,
+.project-card,
+.article-wrap {
+  background-color: var(--surface);
+  color: var(--ink);
+}
+
+.latest-item,
+.meta-list div,
+.article-content table {
+  background-color: #0c1114;
+}
