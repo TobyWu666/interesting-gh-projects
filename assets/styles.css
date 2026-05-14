@@ -725,26 +725,51 @@ body,
   color: var(--primary);
 }
 
-/* ── Ad Containers ── */
-.ad-container {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 0 24px;
+/* ── Side Rail Ads Layout ── */
+.page-with-rails {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 100vh;
 }
 
-.ad-top {
-  margin-top: 16px;
-  margin-bottom: -12px;
+.page-core {
+  min-width: 0;
 }
 
-.ad-bottom {
-  margin-top: 24px;
-  margin-bottom: 12px;
-}
-
-.ad-container ins {
-  border-radius: var(--radius);
+.ad-rail {
+  display: none;
+  position: sticky;
+  top: 24px;
+  align-self: start;
+  width: 160px;
+  max-height: calc(100vh - 48px);
   overflow: hidden;
+  padding: 12px 0;
+}
+
+@media (min-width: 1400px) {
+  .page-with-rails {
+    grid-template-columns: 160px 1fr 160px;
+    gap: 12px;
+    max-width: 1560px;
+    margin: 0 auto;
+  }
+
+  .ad-rail {
+    display: block;
+  }
+}
+
+@media (min-width: 1600px) {
+  .page-with-rails {
+    grid-template-columns: 200px 1fr 200px;
+    gap: 20px;
+    max-width: 1680px;
+  }
+
+  .ad-rail {
+    width: 200px;
+  }
 }
 
 /* ── Legal Pages (Privacy / Terms) ── */
