@@ -2,7 +2,7 @@
 ### 用 200 行 Python 讓工程師會心一笑
 
 **日期：** 2026-05-13
-**Repo：** [navdeepG/pyjokes](https://github.com/navdeepG/pyjokes)
+**Repo：** [pyjokes/pyjokes](https://github.com/pyjokes/pyjokes)
 **⭐ Stars：** ~2k
 **語言：** Python
 **安裝：** `pip install pyjokes`
