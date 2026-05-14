@@ -738,13 +738,18 @@ body,
 
 .ad-rail {
   display: none;
-  position: sticky;
-  top: 24px;
-  align-self: start;
-  width: 160px;
-  max-height: calc(100vh - 48px);
+  padding: 24px 0;
+}
+
+.ad-banner {
+  max-width: 1180px;
+  margin: 32px auto 16px;
+  padding: 0 24px;
+}
+
+.ad-banner ins {
+  border-radius: var(--radius);
   overflow: hidden;
-  padding: 12px 0;
 }
 
 @media (min-width: 1400px) {
