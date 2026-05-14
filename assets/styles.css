@@ -707,3 +707,93 @@ body,
 .article-content table {
   background-color: #0c1114;
 }
+
+/* ── Footer Links ── */
+.footer-links {
+  display: flex;
+  gap: 18px;
+}
+
+.footer-links a {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  transition: color .16s ease;
+}
+
+.footer-links a:hover {
+  color: var(--primary);
+}
+
+/* ── Ad Containers ── */
+.ad-container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.ad-top {
+  margin-top: 16px;
+  margin-bottom: -12px;
+}
+
+.ad-bottom {
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+
+.ad-container ins {
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+/* ── Legal Pages (Privacy / Terms) ── */
+.legal-wrap {
+  max-width: 780px;
+}
+
+.legal-wrap h1 {
+  margin: 0 0 4px;
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.2;
+}
+
+.legal-updated {
+  margin: 0 0 32px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.legal-wrap h2 {
+  margin: 36px 0 12px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  font-size: 22px;
+}
+
+.legal-wrap p {
+  margin: 0 0 14px;
+  color: #dce2df;
+  font-size: 16px;
+  line-height: 1.85;
+}
+
+.legal-wrap a {
+  color: var(--primary);
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.legal-wrap ul {
+  margin: 0 0 16px;
+  padding-left: 22px;
+}
+
+.legal-wrap li {
+  margin-bottom: 6px;
+  color: #dce2df;
+  font-size: 16px;
+  line-height: 1.75;
+}
